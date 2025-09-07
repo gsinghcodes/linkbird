@@ -1,8 +1,8 @@
 "use client"
 
 import Link from "next/link"
-import {useState} from 'react'
-import {useRouter} from 'next/navigation'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { signUp } from '@/server/users'
@@ -10,8 +10,7 @@ import { toast } from "sonner"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { Loader2 } from "lucide-react";
-import { authClient } from "@/lib/auth-client";
+import { Eye, Loader2, EyeOff, ArrowLeft } from "lucide-react";
 
 import {
   Form,
@@ -31,7 +30,8 @@ import {
 import { Input } from "@/components/ui/input"
 
 const formSchema = z.object({
-  username: z.string().min(3),
+  firstName: z.string().min(3),
+  lastName: z.string(),
   email: z.string().min(2).max(50),
   password: z.string().min(2).max(50),
 })
@@ -40,30 +40,25 @@ export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
-  
+
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: ""
     },
   })
 
-  const signInWithGoogle = async () => {
-    await authClient.signIn.social({
-      provider: "google",
-      callbackURL: "/dashboard",
-    });
-  };
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true)
-    const {success, message} =await signUp(values.username, values.email, values.password)
-    if(success){
+    const { success, message } = await signUp(values.firstName, values.lastName, values.email, values.password)
+    if (success) {
       toast.success(message)
       router.push("/dashboard")
     } else {
@@ -75,46 +70,49 @@ export function SignupForm({
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
-        <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome</CardTitle>
+        <div className="ml-3 text-gray-500 flex items-center gap-2">
+          <ArrowLeft className="size-4" /> 
+          <Link href={"/"}>Back</Link>
+        </div>
+        <CardHeader className="">
+          <CardTitle className="text-xl">Register with email</CardTitle>
           <CardDescription>
-            Signup with your Google account
+            Register using your email address
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="grid gap-6">
-                <div className="flex flex-col gap-4">
-                  <Button variant="outline" type="button" onClick={signInWithGoogle} className="w-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                      <path
-                        d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                    Signup with Google
-                  </Button>
-                </div>
-                <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-                  <span className="bg-card text-muted-foreground relative z-10 px-2">
-                    Or continue with
-                  </span>
-                </div>
                 <div className="grid gap-2">
-                  <FormField
-                    control={form.control}
-                    name="username"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Username</FormLabel>
-                        <FormControl>
-                          <Input type="text" required placeholder="username" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="flex gap-2" >
+                    <FormField
+                      control={form.control}
+                      name="firstName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>First name</FormLabel>
+                          <FormControl>
+                            <Input type="text" required placeholder="first name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="lastName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Last name</FormLabel>
+                          <FormControl>
+                            <Input type="text" placeholder="last name" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                   <FormField
                     control={form.control}
                     name="email"
@@ -134,15 +132,25 @@ export function SignupForm({
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Password</FormLabel>
-                        <FormControl>
-                          <Input type="password" required placeholder="password" {...field} />
-                        </FormControl>
+                        <div className="relative">
+                          <FormControl>
+                            <Input type={showPassword? "text" : "password"} required placeholder="password" {...field}
+                            className="pr-10" />
+                          </FormControl>
+                          <div className="absolute right-3 top-2" 
+                          onClick={() => setShowPassword((prev) => !prev)}>
+                          {showPassword ?
+                            <EyeOff className="size-5"  /> :
+                            <Eye className="size-5" />
+                          }
+                          </div>
+                        </div>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
                   <Button type="submit" disabled={loading} className="w-full mt-4" >
-                    {loading? <Loader2 className="size-4 animate-spin" /> : "Signup"}
+                    {loading ? <Loader2 className="size-4 animate-spin" /> : "Create my account"}
                   </Button>
                 </div>
                 <div className="text-center text-sm">
@@ -156,10 +164,6 @@ export function SignupForm({
           </Form>
         </CardContent>
       </Card>
-      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </div>
     </div>
   )
 }

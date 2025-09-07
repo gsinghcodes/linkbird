@@ -2,9 +2,9 @@
 import { auth } from "@/lib/auth"
 
 export const signIn = async (email: string, password: string) => {
-    try {                
+    try {
         await auth.api.signInEmail({
-            body: {
+            body:{
                 email,
                 password,
             }
@@ -21,18 +21,18 @@ export const signIn = async (email: string, password: string) => {
         }
     }
 }
-export const signUp = async (username: string, email: string, password: string) => {    
-    try {                
+export const signUp = async (firstName: string, lastName: string, email: string, password: string) => {
+    try {
         await auth.api.signUpEmail({
-        body: {
-            name: username,
-            email,
-            password,
-        }
-    })
+            body:{
+                name: firstName + " " + lastName,
+                email,
+                password,
+            }
+        })
         return {
             success: true,
-            message: "Signed in successfully!"
+            message: "Signed up successfully!"
         }
     } catch (error) {
         const e = error as Error
