@@ -36,12 +36,12 @@ export function WelcomeForm({
                                 Continue with Google
                             </Button>
                         </div>
-                        <div className="flex flex-col gap-4">
-                            <Button variant="default" type="button" onClick={signInWithGoogle} className="rounded-2xl w-full">
-                                <svg data-name="1-Email" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M29 4H3a3 3 0 0 0-3 3v18a3 3 0 0 0 3 3h26a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-.72 2L16 14.77 3.72 6zM30 25a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.23l13.42 9.58a1 1 0 0 0 1.16 0L30 7.23z"/></svg>
+                        <Link href={"/login"} className="flex flex-col gap-4">
+                            <Button variant="default" className="rounded-2xl w-full">
+                                <svg data-name="1-Email" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M29 4H3a3 3 0 0 0-3 3v18a3 3 0 0 0 3 3h26a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3zm-.72 2L16 14.77 3.72 6zM30 25a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7.23l13.42 9.58a1 1 0 0 0 1.16 0L30 7.23z" fill="#ffffff"/></svg>
                                 Login with Email
                             </Button>
-                        </div>
+                        </Link>
                         <Link href={"/signup"} className="text-center underline-offset-4 underline text-sm">
                             New User? Create an account
                         </Link>

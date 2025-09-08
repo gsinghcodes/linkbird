@@ -61,19 +61,23 @@ export function LoginForm({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true)
-    const { success, message } = await signIn(values.email, values.password)
-    if (success) {
-      toast.success(message)
-      router.push("/dashboard")
+    const {error} = await authClient.signIn.email({
+      email: values.email,
+      password: values.password
+    })
+    // const { success, message } = await signIn(values.email, values.password)
+    if (error) {
+      toast.error(error.message || "Something went wrong")
     } else {
-      toast.error(message)
+      toast.success("Logged in successfully")
+      router.push("/dashboard")
     }
     setLoading(false)
   }
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <Card>
+      <Card className="w-100" >
         <div className="ml-3 text-gray-500 flex items-center gap-2">
           <ArrowLeft className="size-4" /> 
           <Link href={"/"}>Back</Link>

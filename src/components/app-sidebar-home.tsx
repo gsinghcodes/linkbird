@@ -8,48 +8,22 @@ import {
   Linkedin,
   Settings,
   Mail,
-  ChartColumnBig,
-  SquareActivity,
-  MessageSquareText,
-  Cable,
-  Headset,
-  Moon,
-
 } from "lucide-react"
 
 import Image from "next/image"
 
 import { NavOverview } from "@/components/nav-overview"
 import { NavSettings } from "@/components/nav-settings"
-import { NavAdmin } from "@/components/nav-admin"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-type User = {
-  id: string
-  createdAt: Date
-  updatedAt: Date
-  email: string
-  emailVerified: boolean
-  name: string
-  image?: string | null
-}
-
-interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
-  user: User
-}
-
 const data = {
-
   navMain: [
     {
       title: "Dashboard",
@@ -78,24 +52,6 @@ const data = {
       icon: Linkedin,
     }
   ],
-  navSecondary: [
-    {
-      url: "#",
-      icon: MessageSquareText,
-    },
-    {
-      url: "#",
-      icon: Cable,
-    },
-    {
-      url: "#",
-      icon: Headset,
-    },
-    {
-      url: "#",
-      icon: Moon,
-    },
-  ],
   projects: [
     {
       name: "Setting & Billing",
@@ -103,22 +59,9 @@ const data = {
       icon: Settings,
     },
   ],
-  admin: [
-    {
-      name: "Activity logs",
-      url: "#",
-      icon: SquareActivity,
-    },
-    {
-      name: "User logs",
-      url: "#",
-      icon: ChartColumnBig,
-    },
-  ]
 }
 
-export function AppSidebar({ user, ...props }: AppSidebarProps) {
-
+export function AppSidebarHome({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar variant="floating" {...props}>
       <SidebarHeader>
@@ -139,14 +82,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
         <NavOverview items={data.navMain} />
         {/* for settings on sidebar */}
         <NavSettings projects={data.projects} />
-        {/* for admin panel on sidebar */}
-        <NavAdmin projects={data.admin} />
-        {/* right over user info */}
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={user} />
-      </SidebarFooter>
     </Sidebar>
   )
 }

@@ -11,6 +11,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { Eye, Loader2, EyeOff, ArrowLeft } from "lucide-react";
+import { authClient } from "@/lib/auth-client"
 
 import {
   Form,
@@ -57,12 +58,19 @@ export function SignupForm({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true)
-    const { success, message } = await signUp(values.firstName, values.lastName, values.email, values.password)
-    if (success) {
-      toast.success(message)
-      router.push("/dashboard")
+    const {error} = await authClient.signUp.email({
+      email: values.email,
+      password: values.password,
+      name: values.firstName + " " + values.lastName,
+      callbackURL: "/dashboard"
+    
+    })
+    if (error) {
+      toast.error(error.message || "Something went wrong")
     } else {
-      toast.error(message)
+      toast.success("Signed up successfully")
+      
+      router.push("/dashboard")
     }
     setLoading(false)
   }
