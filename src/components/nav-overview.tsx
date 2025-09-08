@@ -12,6 +12,7 @@ import {
   SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuAction,
+  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
@@ -62,6 +63,9 @@ export function NavOverview({
                             <a href={subItem.url}>
                               <span>{subItem.title}</span>
                             </a>
+                          {subItem.title === "Messages" && (
+                            <SidebarMenuBadge>24</SidebarMenuBadge>
+                          )}
                           </SidebarMenuSubButton>
                         </SidebarMenuSubItem>
                       ))}

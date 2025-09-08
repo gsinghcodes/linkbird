@@ -1,60 +1,48 @@
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { AppSidebar } from "@/components/app-sidebar"
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-} from "@/components/ui/breadcrumb"
-import { Separator } from "@/components/ui/separator"
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
-import {getServerSession} from "@/lib/get-session"
+// import { LinkedInAccounts } from "@/components/dashboard/linkedin-accounts"
+// import { Campaigns } from "@/components/dashboard/campaigns"
+import { LeadsTable } from "@/components/leads/LeadsTable"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { AccountsTable } from "@/components/linkedinaccounts/AccountsTable"
 
-export default async function Page() {
-  const session = await getServerSession()
-  const user = session?.user
-
-  if(!user) {
-    redirect("/login")
-  }
+export default async function DashboardPage() {
+  // fetch all three datasets in parallel
+  // const [accounts, campaigns, leads] = await Promise.all([...])
 
   return (
-    <SidebarProvider>
-      <AppSidebar user={user} />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-2 data-[orientation=vertical]:h-4"
-            />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/dashboard">
-                    Dashboard
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
-        </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="bg-muted/50 aspect-video rounded-xl" />
-            <div className="bg-muted/50 aspect-video rounded-xl" />
-            <div className="bg-muted/50 aspect-video rounded-xl" />
-          </div>
-          <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
+    <div className="flex gap-4">
+      <div className="flex min-w-1/2 flex-col gap-4">
+        <div>
+          <Card>
+            <CardHeader>
+              <CardTitle>Campaigns</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <LeadsTable />
+            </CardContent>
+          </Card>
         </div>
-      </SidebarInset>
-    </SidebarProvider>
+        <div className="">
+          <Card>
+            <CardHeader>
+              <CardTitle>Linkedin Accounts</CardTitle>
+            </CardHeader>
+            <CardContent className="h-60 overflow-auto">
+              <AccountsTable />
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+      <div className="min-w-1/2 min-h-full">
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Activity</CardTitle>
+
+          </CardHeader>
+          <CardContent>
+            <LeadsTable />
+          </CardContent>
+        </Card>
+      </div>
+    </div>
   )
 }

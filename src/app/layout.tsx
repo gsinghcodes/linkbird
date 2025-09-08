@@ -15,6 +15,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { ReactQueryProvider } from "@/providers/QueryProvider"
 
 
 const geistSans = Geist({
@@ -78,7 +79,7 @@ export default function RootLayout({
             </SidebarProvider>
           </div>
           <div className="absolute backdrop-blur-md inset-0 z-20 flex items-center justify-center" >
-            {children}
+            <ReactQueryProvider>{children}</ReactQueryProvider>
           </div>
         </div>
         <Toaster />

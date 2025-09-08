@@ -59,12 +59,12 @@ const data = {
     },
     {
       title: "Leads",
-      url: "#",
+      url: "/dashboard/leads",
       icon: IdCard,
     },
     {
       title: "Campaign",
-      url: "#",
+      url: "/dashboard/campaigns",
       icon: FlaskConical,
     },
     {
