@@ -3,11 +3,11 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export const useLeads = () => {
+export const useCampaigns = () => {
   return useQuery({
-    queryKey: ["leads"],
+    queryKey: ["campaigns"],
     queryFn: async () => {
-      const { data } = await axios.get("/api/leads");
+      const { data } = await axios.get("/api/campaigns");
       return data;
     },
     staleTime: 1000 * 60 * 5

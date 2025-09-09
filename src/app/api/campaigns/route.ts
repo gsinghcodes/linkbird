@@ -1,5 +1,5 @@
 import { db } from "@/index";
-import { leads } from "@/db/schema/users";
+import { campaigns } from "@/db/schema/users";
 import { getServerSession } from "@/lib/get-session";
 import { NextResponse } from "next/server";
 
@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const userLeads = await db.select().from(leads);
+  const userLeads = await db.select().from(campaigns);
 
   return NextResponse.json(userLeads);
 }

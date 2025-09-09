@@ -1,73 +1,173 @@
-to start first type in the command npm i to install the dependencies
-the app is a working copy of linkbird.ai with limited functionalities 
-it uses nextjs as the framework and uses typescript throughout for the language
-the database used is postgresql + drizzle orm
+# LinkBird
 
-# Linkbird Assignment
+LinkBird is a modern web application for managing marketing campaigns and leads. Built with Next.js (App Router), TypeScript, Drizzle ORM, and a modular component architecture, it provides a dashboard for campaign management, lead tracking, and user authentication.
 
-This is an assignment for the Kandid internship application.
+---
 
-## Overview
+## Table of Contents
 
-This project is a working copy of [linkbird.ai](https://linkbird.ai) with limited functionalities. It is built using:
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+- [Development](#development)
+- [Scripts](#scripts)
+- [Environment Variables](#environment-variables)
+- [Routing](#routing)
+- [Known Issues & Roadmap](#known-issues--roadmap)
+- [License](#license)
 
-- **Next.js** (App Router, TypeScript)
-- **shadcn/ui** for UI components
-- **better-auth** for authentication
-- **PostgreSQL** as the database, accessed via **Drizzle ORM**
+---
+
+## Features
+
+- **Campaign Management:** Create, view, and filter marketing campaigns.
+- **Lead Tracking:** Associate leads with campaigns and view lead details.
+- **User Authentication:** Login and signup flows.
+- **Responsive UI:** Built with reusable components and utility-first CSS.
+- **API Routes:** RESTful endpoints for campaigns and leads.
+- **Database Integration:** Uses Drizzle ORM for type-safe database access.
+- **Testing & Linting:** ESLint and TypeScript for code quality.
+
+---
 
 ## Project Structure
 
 ```
-src/
-  app/           # Next.js app directory (pages, layouts, API routes)
-  components/    # Reusable UI and app components (shadcn/ui)
-  db/            # Database schema (Drizzle ORM)
-  hooks/         # Custom React hooks
-  lib/           # Utility and auth logic
-  server/        # Server-side logic
-public/          # Static assets
-drizzle/         # Database migration files
+linkbird/
+├── .env                      # Environment variables
+├── .gitignore
+├── components.json           # Component registry
+├── drizzle.config.ts         # Drizzle ORM config
+├── middleware.ts             # Next.js middleware
+├── next.config.ts            # Next.js config
+├── package.json
+├── postcss.config.mjs
+├── tsconfig.json
+├── public/                   # Static assets (SVGs, images)
+├── src/
+│   ├── app/                  # Next.js app directory (App Router)
+│   │   ├── dashboard/        # Dashboard pages
+│   │   │   ├── campaigns/    # Campaigns list page
+│   │   │   │   ├── page.tsx  # Campaigns dashboard
+│   │   │   │   └── [id]/     # (To be developed) Campaign detail page
+│   │   │   ├── leads/        # Leads dashboard
+│   │   ├── api/              # API route handlers
+│   │   ├── login/            # Login page
+│   │   ├── signup/           # Signup page
+│   │   ├── layout.tsx        # Root layout
+│   │   └── page.tsx          # Home page
+│   ├── components/           # UI and feature components
+│   ├── context/              # React context providers
+│   ├── db/                   # Database schema
+│   ├── hooks/                # Custom React hooks
+│   ├── lib/                  # Utility libraries
+│   ├── providers/            # React providers
+│   ├── scripts/              # Seed scripts
+│   ├── server/               # Server utilities
+│   └── stores/               # State management
+├── dummydata/                # Example data
+├── drizzle/                  # Drizzle ORM migrations
+└── .next/                    # Next.js build output
 ```
+
+---
 
 ## Getting Started
 
-1. **Install dependencies:**
-	```
-	npm install
-	```
+### Prerequisites
 
-2. **Set up environment variables:**
-	- Create a `.env` file with your database and auth credentials.
+- Node.js (v18+ recommended)
+- npm or yarn
+- A supported database (see Drizzle ORM docs)
 
-3. **Run the development server:**
-	```
-	npm run dev
-	```
-	The app will be available at `http://localhost:3000`.
+### Installation
 
-4. **Build for production:**
-	```
-	npm run build
-	npm start
-	```
+1. **Clone the repository:**
+   ```sh
+   git clone <repo-url>
+   cd linkbird
+   ```
 
-## Features
+2. **Install dependencies:**
+   ```sh
+   npm install
+   # or
+   yarn install
+   ```
 
-- User authentication (Google, email/password)
-- Dashboard and user management
-- Responsive UI with shadcn components
+3. **Configure environment variables:**
+   - Copy `.env.example` to `.env` and fill in the required values.
 
-## Tech Stack
+4. **Set up the database:**
+   - Configure your database connection in `.env`.
+   - Run migrations if needed.
 
-- Next.js 15 (App Router, TypeScript)
-- React 19
-- shadcn/ui
-- better-auth
-- Drizzle ORM
-- PostgreSQL
+---
 
-## Notes
+## Development
 
-- Authentication is handled optimistically in middleware, but should be checked in each route for security.
-- This is a demo/assignment and not intended for production use.
+### Running the Development Server
+
+```sh
+npm run dev
+# or
+yarn dev
+```
+
+- The app will be available at `http://localhost:3000`.
+
+### Building for Production
+
+```sh
+npm run build
+npm start
+```
+
+---
+
+## Scripts
+
+- `dev` – Start the development server.
+- `build` – Build the app for production.
+- `start` – Start the production server.
+- `lint` – Run ESLint.
+- `seed` – Seed the database with dummy data (see `src/scripts/`).
+
+---
+
+## Environment Variables
+
+See `.env.example` for all required environment variables. Typical values include:
+
+- `DATABASE_URL` – Database connection string
+- `NEXTAUTH_SECRET` – Authentication secret
+- `...` – Other service keys as needed
+
+---
+
+## Routing
+
+- `/` – Home page
+- `/dashboard` – Main dashboard
+- `/dashboard/campaigns` – Campaigns list
+- `/dashboard/campaigns/[id]` – **(To be developed)** Campaign detail page
+- `/dashboard/leads` – Leads list
+- `/login` – Login page
+- `/signup` – Signup page
+- `/api/campaigns` – Campaigns API
+- `/api/leads` – Leads API
+
+---
+
+## Known Issues & Roadmap
+
+- **Campaign Detail Page:**  
+  The route `/dashboard/campaigns/[id]` is scaffolded but **not yet implemented**. This page will display detailed information about a single campaign, including status, associated leads, and actions.
+
+- **Testing:**  
+  Automated tests are not yet included.
+
+- **Documentation:**  
+  More detailed API and component documentation is planned.
+
+---

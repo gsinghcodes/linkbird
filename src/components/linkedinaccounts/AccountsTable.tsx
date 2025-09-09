@@ -18,11 +18,8 @@ import {
 import { linkedinaccounts } from "../../../dummydata/linkedinaccounts";
 
 import { Progress } from "@/components/ui/progress"
-import { Button } from "../ui/button";
-import { ChevronsUpDown, CircleCheckBig } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { SidebarMenuButton } from "../ui/sidebar";
 import Image from "next/image";
+import { CircleCheckBig } from "lucide-react";
 
 export function AccountsTable(): React.JSX.Element {
     return (

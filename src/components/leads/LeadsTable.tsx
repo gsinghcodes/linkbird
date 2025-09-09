@@ -3,6 +3,22 @@
 import { useLeads } from "@/hooks/useLeads";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton"; // assuming you have a Skeleton component
+import { BadgeCheck, Clock, LucideIcon, Send, UserRoundPlus } from "lucide-react";
+import React from "react";
+
+export const statusColors: { [key: string]: string } = {
+  Pending: "bg-yellow-100 text-yellow-800",
+  Contacted: "bg-blue-100 text-blue-800",
+  Responded: "bg-purple-100 text-purple-800",
+  Converted: "bg-green-100 text-green-800",
+};
+
+export const statusSymbols: {[key: string]: LucideIcon} = {
+  Pending: Clock,
+  Contacted: UserRoundPlus,
+  Responded: Send,
+  Converted: BadgeCheck,
+};
 
 export type Lead = {
   id: number;
@@ -26,9 +42,9 @@ export function LeadsTable() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Lead</TableHead>
-            <TableHead>Campaign</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead className="text-gray-500">Lead</TableHead>
+            <TableHead className="text-gray-500">Campaign</TableHead>
+            <TableHead className="text-gray-500">Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -48,21 +64,18 @@ export function LeadsTable() {
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>Lead</TableHead>
-          <TableHead>Campaign</TableHead>
-          <TableHead>Status</TableHead>
+          <TableHead className="text-gray-500">Lead</TableHead>
+          <TableHead className="text-gray-500">Campaign</TableHead>
+          <TableHead className="text-gray-500 text-center">Status</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {leads?.map((lead: Lead) => (
-          <TableRow key={lead.id}>
+          <TableRow key={lead.id} className="hover:cursor-pointer hover:bg-gray-100"  >
             <TableCell>
               <div className="flex flex-col overflow-hidden">
                 <span className="truncate font-medium text-xs">
                   {lead.name}
-                </span>
-                <span className="truncate text-gray-500 text-xs">
-                  {lead.email}
                 </span>
                 <span className="truncate text-gray-500 text-xs">
                   {lead.company}
@@ -70,7 +83,16 @@ export function LeadsTable() {
               </div>
             </TableCell>
             <TableCell className="text-xs">{lead.campaignName}</TableCell>
-            <TableCell>{lead.status}</TableCell>
+            <TableCell className="text-center">
+              {lead.status ? (
+                <span className={`inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium ${statusColors[lead.status] || "bg-gray-100 text-gray-800"}`}>
+                  {React.createElement(statusSymbols[lead.status] || Clock, { className: "size-3" })}
+                  {lead.status}
+                </span>
+              ) : (
+                <span className="text-gray-500 text-xs">No Status</span>
+              )}
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

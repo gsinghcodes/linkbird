@@ -126,7 +126,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" className="flex items-center justify-center" asChild>
               <a href="#">
-                <Image width={150} height={150} src="linkbird-light-logo.svg" alt="Linkbird" />
+                <Image width={150} height={150} src="/linkbird-light-logo.svg" alt="Linkbird" />
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>

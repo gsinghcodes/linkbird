@@ -61,7 +61,7 @@ export const verification = pgTable("verification", {
 });
 
 export const leads = pgTable("leads", {
-  id: serial("id").primaryKey(),
+  id: varchar("id").primaryKey(),
   userId: text("user_id"), // link to users table
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
