@@ -136,11 +136,13 @@ npm start
 
 ## Environment Variables
 
-See `.env.example` for all required environment variables. Typical values include:
+All the required environment variables include:
 
 - `DATABASE_URL` – Database connection string
-- `NEXTAUTH_SECRET` – Authentication secret
-- `...` – Other service keys as needed
+- `BETTER_AUTH_SECRET` – Better auth authentication secret
+- `BETTER_AUTH_URL` – Address to your server
+- `GOOGLE_CLIENT_ID` – Google client ID for authentication
+- `GOOGLE_CLIENT_SECRET` – Google client secret for authentication
 
 ---
 
