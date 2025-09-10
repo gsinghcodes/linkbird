@@ -38,7 +38,7 @@ const formSchema = z.object({
 export const signInWithGoogle = async () => {
   await authClient.signIn.social({
     provider: "google",
-    callbackURL: "/dashboard",
+    callbackURL: "https://linkbird-eight.vercel.app/dashboard",
   });
 };
 
