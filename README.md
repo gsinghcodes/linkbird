@@ -27,6 +27,7 @@ LinkBird is a modern web application for managing marketing campaigns and leads.
 - **API Routes:** RESTful endpoints for campaigns and leads.
 - **Database Integration:** Uses Drizzle ORM for type-safe database access.
 - **Testing & Linting:** ESLint and TypeScript for code quality.
+- **Data Fetching & Caching:** Uses TanStack Query for efficient data fetching and caching.
 
 ---
 
@@ -46,25 +47,33 @@ linkbird/
 ├── public/                   # Static assets (SVGs, images)
 ├── src/
 │   ├── app/                  # Next.js app directory (App Router)
+│   │   ├── favicon.ico
+│   │   ├── globals.css
+│   │   ├── layout.tsx        # Root layout
+│   │   ├── page.tsx          # Home page
+│   │   ├── api/              # API route handlers
 │   │   ├── dashboard/        # Dashboard pages
 │   │   │   ├── campaigns/    # Campaigns list page
-│   │   │   │   ├── page.tsx  # Campaigns dashboard
-│   │   │   │   └── [id]/     # (To be developed) Campaign detail page
+│   │   │   │   ├── page.tsx
+│   │   │   │   └── [id]/     # Campaign detail page
 │   │   │   ├── leads/        # Leads dashboard
-│   │   ├── api/              # API route handlers
 │   │   ├── login/            # Login page
 │   │   ├── signup/           # Signup page
-│   │   ├── layout.tsx        # Root layout
-│   │   └── page.tsx          # Home page
 │   ├── components/           # UI and feature components
+│   │   ├── campaigns/
+│   │   ├── leads/
+│   │   ├── linkedinaccounts/
+│   │   ├── skeletons/
+│   │   └── ui/
 │   ├── context/              # React context providers
 │   ├── db/                   # Database schema
-│   ├── hooks/                # Custom React hooks
+│   │   └── schema/
+│   ├── hooks/                # Custom React hooks (e.g., useCampaigns, useLeads)
 │   ├── lib/                  # Utility libraries
-│   ├── providers/            # React providers
+│   ├── providers/            # React providers (e.g., QueryProvider for TanStack Query)
 │   ├── scripts/              # Seed scripts
 │   ├── server/               # Server utilities
-│   └── stores/               # State management
+│   └── stores/               # State management (e.g., leadStore)
 ├── dummydata/                # Example data
 ├── drizzle/                  # Drizzle ORM migrations
 └── .next/                    # Next.js build output
@@ -137,11 +146,13 @@ npm start
 
 ## Environment Variables
 
-See `.env.example` for all required environment variables. Typical values include:
+All the required environment variables include:
 
 - `DATABASE_URL` – Database connection string
-- `NEXTAUTH_SECRET` – Authentication secret
-- `...` – Other service keys as needed
+- `BETTER_AUTH_SECRET` – Better auth authentication secret
+- `BETTER_AUTH_URL` – Address to your server
+- `GOOGLE_CLIENT_ID` – Google client ID for authentication
+- `GOOGLE_CLIENT_SECRET` – Google client secret for authentication
 
 ---
 
@@ -150,7 +161,7 @@ See `.env.example` for all required environment variables. Typical values includ
 - `/` – Home page
 - `/dashboard` – Main dashboard
 - `/dashboard/campaigns` – Campaigns list
-- `/dashboard/campaigns/[id]` – **(To be developed)** Campaign detail page
+- `/dashboard/campaigns/[id]` – Campaign detail page
 - `/dashboard/leads` – Leads list
 - `/login` – Login page
 - `/signup` – Signup page
@@ -159,10 +170,25 @@ See `.env.example` for all required environment variables. Typical values includ
 
 ---
 
-## Known Issues & Roadmap
+## Data Fetching & Optimization
 
-- **Campaign Detail Page:**  
-  The route `/dashboard/campaigns/[id]` is scaffolded but **not yet implemented**. This page will display detailed information about a single campaign, including status, associated leads, and actions.
+- **TanStack Query** is used for all data fetching and caching, ensuring efficient network usage and deduplication of requests.
+- For expensive computations on fetched data (such as filtering or sorting), use React's `useMemo` in your components to avoid unnecessary recalculations.
+- Example:
+  ```tsx
+  import { useCampaigns } from "@/hooks/useCampaigns";
+  import { useMemo } from "react";
+
+  const { data: campaigns = [] } = useCampaigns();
+  const activeCampaigns = useMemo(
+    () => campaigns.filter(c => c.active),
+    [campaigns]
+  );
+  ```
+
+---
+
+## Known Issues & Roadmap
 
 - **Testing:**  
   Automated tests are not yet included.
