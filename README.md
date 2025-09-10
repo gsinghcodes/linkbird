@@ -139,7 +139,6 @@ npm start
 - `build` – Build the app for production.
 - `start` – Start the production server.
 - `lint` – Run ESLint.
-- `seed` – Seed the database with dummy data (see `src/scripts/`).
 
 ---
 
