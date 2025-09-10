@@ -19,7 +19,7 @@ type StatusLevel = {
   color: string;
 }
 
-const statusLevelMap: Record<string, StatusLevel> = {
+export const statusLevelMap: Record<string, StatusLevel> = {
   "Pending": {
     value: 1,
     color: "red"
@@ -85,62 +85,59 @@ export default function Page() {
           </TableHeader>
           <TableBody>
             {leads?.map((lead: Lead) => (
-              <TableRow key={lead.id} className="hover:bg-gray-100">
-                <Sheet>
-                  {/* Name Cell */}
-                  <TableCell className="py-2">
-                    <SheetTrigger asChild>
-                      <div className="flex flex-col overflow-hidden cursor-pointer">
+              <Sheet key={lead.id}>
+                <SheetTrigger asChild>
+                  <TableRow className="hover:bg-gray-100 cursor-pointer">
+                    {/* Name Cell */}
+                    <TableCell className="py-2">
+                      <div className="flex flex-col overflow-hidden">
                         <span className="truncate font-medium text-xs">{lead.name}</span>
                         <span className="truncate text-gray-500 text-xs">{lead.company}</span>
                       </div>
-                    </SheetTrigger>
-                  </TableCell>
+                    </TableCell>
 
-                  {/* Campaign Name Cell */}
-                  <TableCell className="py-2 text-xs">
-                    <SheetTrigger asChild>
-                      <div className="cursor-pointer">{lead.campaignName}</div>
-                    </SheetTrigger>
-                  </TableCell>
+                    {/* Campaign Name */}
+                    <TableCell className="py-2 text-xs">
+                      {lead.campaignName}
+                    </TableCell>
 
-                  {/* Activity / Segmented Progress Cell */}
-                  <TableCell className="pb-2 flex justify-center">
-                    <SheetTrigger asChild>
-                      <div className="cursor-pointer mb-2">
-                        <SegmentedProgress
-                          value={statusLevelMap[lead.status]?.value || 0}
-                          color={statusLevelMap[lead.status]?.color || "gray"}
-                        />
-                      </div>
-                    </SheetTrigger>
-                  </TableCell>
+                    {/* Activity / Segmented Progress */}
+                    <TableCell className="pb-2 flex justify-center">
+                      <SegmentedProgress
+                        value={statusLevelMap[lead.status]?.value || 0}
+                        color={statusLevelMap[lead.status]?.color || "gray"}
+                      />
+                    </TableCell>
 
-                  {/* Status Cell */}
-                  <TableCell className="py-2 text-center">
-                    <SheetTrigger asChild>
-                      <CustomButton icon={statusSymbols[lead.status]} color={statusColors[lead.status]} text={lead.status} />
-                    </SheetTrigger>
-                  </TableCell>
+                    {/* Status */}
+                    <TableCell className="py-2 text-center">
+                      <CustomButton
+                        icon={statusSymbols[lead.status]}
+                        color={statusColors[lead.status]}
+                        text={lead.status}
+                      />
+                    </TableCell>
+                  </TableRow>
+                </SheetTrigger>
 
-                  {/* Sheet Content */}
-                  <SheetContent>
-                    <SheetHeader>
-                      <SheetTitle>Lead Profile</SheetTitle>
-                      <SheetDescription>
-                        <LeadCard lead={lead} />
-                        <div className='p-3 pt-5'>
-                            <VerticalLinearStepper status={lead.status} />
-                        </div>
-                      </SheetDescription>
-                    </SheetHeader>
-                  </SheetContent>
-                </Sheet>
-              </TableRow>
+                {/* Sheet Content */}
+                <SheetContent>
+                  <SheetHeader>
+                    <SheetTitle>Lead Profile</SheetTitle>
+                  </SheetHeader>
+
+                  {/* Move your custom content OUTSIDE the description */}
+                  <div className="px-3">
+                    <LeadCard lead={lead} />
+                    <div className="p-3 pt-5">
+                      <VerticalLinearStepper status={lead.status} />
+                    </div>
+                  </div>
+                </SheetContent>
+
+              </Sheet>
             ))}
           </TableBody>
-
-
 
         </Table>
       </CardContent>

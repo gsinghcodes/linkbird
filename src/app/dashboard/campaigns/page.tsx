@@ -14,7 +14,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CirclePlus, Clock, Search, Users } from "lucide-react";
+import { CirclePlus, Clock, Search } from "lucide-react";
 import {
   campaignStatusColors,
   campaignStatusSymbols,
@@ -38,10 +38,6 @@ function CampaignPage() {
     }
     return count;
   };
-
-  if (isCampaignsLoading || isLeadsLoading) {
-    return <p className="p-4">Loading...</p>;
-  }
 
   const filteredCampaigns = campaigns
     ?.filter((c: Campaign) =>
@@ -70,15 +66,15 @@ function CampaignPage() {
         </Button>
       </div>
       <div className="flex items-center justify-between">
-        <Tabs defaultValue="all" className="shadow-md h-4" onValueChange={setStatusFilter}>
-          <TabsList className="flex bg-gray-400 rounded-md text-sm">
-            <TabsTrigger className={statusFilter === "all" ? `bg-gray-500 py-1 text-white px-2 shadow-lg rounded-md` : `bg-gray-400 text-gray-200 px-2 rounded-md`} value="all">All</TabsTrigger>
-            <TabsTrigger className={statusFilter === "active" ? `bg-gray-500 py-1 text-white px-2 shadow-lg rounded-md` : `bg-gray-400 text-gray-200 px-2 rounded-md`} value="active">Active</TabsTrigger>
-            <TabsTrigger className={statusFilter === "inactive" ? `bg-gray-500 py-1 text-white px-2 shadow-lg rounded-md` : `bg-gray-400 text-gray-200 px-2 rounded-md`} value="inactive">Inactive</TabsTrigger>
+        <Tabs defaultValue="all" className="shadow-md" onValueChange={setStatusFilter}>
+          <TabsList className="flex rounded-md text-sm">
+            <TabsTrigger className={statusFilter === "all" ? `flex items-center gap-2 py-1 text-purple-400 px-2 shadow-lg rounded-md cursor-pointer` : `flex items-center gap-2  px-2 rounded-md cursor-pointer`} value="all">All</TabsTrigger>
+            <TabsTrigger className={statusFilter === "active" ? `flex items-center gap-2 py-1 text-purple-400 px-2 shadow-lg rounded-md cursor-pointer` : `flex items-center gap-2  px-2 rounded-md cursor-pointer`} value="active">Active</TabsTrigger>
+            <TabsTrigger className={statusFilter === "inactive" ? `flex items-center gap-2 py-1 text-purple-400 px-2 shadow-lg rounded-md cursor-pointer` : `flex items-center gap-2  px-2 rounded-md cursor-pointer`} value="inactive">Inactive</TabsTrigger>
           </TabsList>
         </Tabs>
 
-        <div className="w-50 rounded-lg  shadow-xl bg-white relative">
+        <div className="w-50 rounded-lg  shadow-md bg-white relative">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-400" />
           <Input
             type="text"
@@ -112,38 +108,36 @@ function CampaignPage() {
                 <TableRow
                   key={campaign.id}
                   className="hover:bg-gray-100 transition-colors cursor-pointer"
+                  onClick={() =>
+                    (window.location.href = `/dashboard/campaigns/${campaign.id}`)
+                  } // whole row is clickable
                 >
-                  <Link href={`/dashboard/campaigns/${campaign.id}`}>
-                    {/* Campaign Name */}
-                    <TableCell className="text-sm font-medium truncate">
+                  <TableCell className="text-sm font-medium truncate">
+                    <Link
+                      href={`/dashboard/campaigns/${campaign.id}`}
+                      className="block w-full h-full"
+                    >
                       {campaign.name}
-                    </TableCell>
-
-                    {/* Status */}
-                    <TableCell className="text-center">
-                      {campaign.status ? (
-                        <span
-                          className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${campaignStatusColors[campaign.status]}`}
-                        >
-                          {React.createElement(
-                            campaignStatusSymbols[campaign.status] || Clock,
-                            { className: "h-3 w-3" }
-                          )}
-                          {campaign.status}
-                        </span>
-                      ) : (
-                        <span className="text-gray-400 text-xs">No Status</span>
-                      )}
-                    </TableCell>
-
-                    {/* Total Leads */}
-                    <TableCell className="text-right">
-                      <span className="text-sm flex gap-2 items-center justify-end font-semibold">
-                        <Users size={14} />
-                        {getLeadCount(campaign.name)}
+                    </Link>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {campaign.status ? (
+                      <span
+                        className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${campaignStatusColors[campaign.status]}`}
+                      >
+                        {React.createElement(
+                          campaignStatusSymbols[campaign.status] || Clock,
+                          { className: "h-3 w-3" }
+                        )}
+                        {campaign.status}
                       </span>
-                    </TableCell>
-                  </Link>
+                    ) : (
+                      <span className="text-gray-400 text-xs">No Status</span>
+                    )}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {getLeadCount(campaign.name)}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

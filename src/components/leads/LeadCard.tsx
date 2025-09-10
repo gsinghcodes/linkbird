@@ -34,9 +34,9 @@ function LeadCard({ lead }: { lead: Lead }): React.JSX.Element {
                                 )}
                             </div>
                         </div>
-                        <Accordion type="single" collapsible>
-                            <AccordionItem value="item-1">
-                                <AccordionTrigger>Additional Profile Info</AccordionTrigger>
+                        <Accordion className="focus:outline-none" type="single" collapsible>
+                            <AccordionItem className="focus:outline-none" value="item-1">
+                                <AccordionTrigger className="focus:outline-none">Additional Profile Info</AccordionTrigger>
                                 <AccordionContent>
                                     {lead.email}
                                 </AccordionContent>
