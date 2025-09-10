@@ -14,7 +14,6 @@ LinkBird is a modern web application for managing marketing campaigns and leads.
 - [Environment Variables](#environment-variables)
 - [Routing](#routing)
 - [Known Issues & Roadmap](#known-issues--roadmap)
-- [License](#license)
 
 ---
 
