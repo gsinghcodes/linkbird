@@ -33,6 +33,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import Link from "next/link"
 
 type User = {
   id: string
@@ -125,9 +126,9 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" className="flex items-center justify-center" asChild>
-              <a href="#">
+              <Link href="#">
                 <Image width={150} height={150} src="/linkbird-light-logo.svg" alt="Linkbird" />
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

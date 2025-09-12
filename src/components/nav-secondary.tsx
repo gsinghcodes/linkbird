@@ -8,6 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import Link from "next/link"
 
 export function NavSecondary({
   items,
@@ -22,9 +23,9 @@ export function NavSecondary({
     <SidebarGroup {...props}>
       <SidebarGroupContent className="flex justify-around items-center">
           {items.map((item, index) => (
-            <a key={index} href={item.url}>
+            <Link key={index} href={item.url}>
               <item.icon size={15} />
-            </a>
+            </Link>
           ))}
       </SidebarGroupContent>
     </SidebarGroup>
