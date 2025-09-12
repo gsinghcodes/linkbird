@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { useCampaigns } from "@/hooks/useCampaigns"
 import { Campaign } from "./campaigns/CampaignsTable"
+import Link from "next/link"
 
 export function DashboardBreadcrumb() {
   const pathname = usePathname()
@@ -42,8 +43,10 @@ export function DashboardBreadcrumb() {
                 {isLast ? (
                   <BreadcrumbPage className="capitalize">{displayText}</BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink href={href} className="capitalize">
-                    {displayText}
+                  <BreadcrumbLink asChild>
+                    <Link href={href} className="capitalize">
+                      {displayText}
+                    </Link>
                   </BreadcrumbLink>
                 )}
               </BreadcrumbItem>
